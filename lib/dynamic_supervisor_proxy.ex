@@ -30,6 +30,7 @@ defmodule DynamicSupervisor.Proxy do
   """
   defmacro start_link(mod, arg, opts) do
     quote bind_quoted: [mod: mod, arg: arg, opts: opts] do
+      IO.inspect(">>>>>>>>>> Inserting Agent.start_link >>>>>>>>>>>")
       DynamicSupervisor.Proxy.Agent.start_link(mod, arg, opts)
     end
   end
