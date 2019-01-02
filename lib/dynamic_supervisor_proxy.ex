@@ -1,9 +1,18 @@
 defmodule DynamicSupervisor.Proxy do
-  defmacro __using__(_options) do
-    quote do
-      use DynamicSupervisor
-      require unquote(__MODULE__)
-      alias unquote(__MODULE__)
+  defmacro __using__(options) do
+    alias = options[:alias]
+
+    if alias do
+      quote do
+        use DynamicSupervisor
+        alias unquote(__MODULE__), as: unquote(alias)
+        require unquote(alias)
+      end
+    else
+      quote do
+        use DynamicSupervisor
+        import unquote(__MODULE__)
+      end
     end
   end
 
@@ -17,9 +26,7 @@ defmodule DynamicSupervisor.Proxy do
 
       use DynamicSupervisor.Proxy
 
-      def start_link(:ok) do
-        Proxy.start_link(DynSup, :ok, name: DynSup)
-      end
+      def start_link(:ok), do: start_link(DynSup, :ok, name: DynSup)
   """
   defmacro start_link(mod, arg, opts) do
     quote bind_quoted: [mod: mod, arg: arg, opts: opts] do
