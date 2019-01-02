@@ -33,7 +33,7 @@ defmodule DynamicSupervisor.Proxy.Agent do
     case Process.whereis(name) do
       nil ->
         times = @times - times_left + 1
-        Log.info(:no_longer_registered, {name, @timeout, times, reason})
+        Log.info(:now_unregistered, {name, @timeout, times, reason})
 
       pid when is_pid(pid) ->
         wait(name, reason, times_left - 1)
