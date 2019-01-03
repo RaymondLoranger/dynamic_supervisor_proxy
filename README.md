@@ -3,7 +3,7 @@
 Starts a module-based supervisor process.
 
 Will wait a bit if the supervisor name is still registered on restarts.
-See: [Supervisor restart backoff](https://github.com/erlang/otp/pull/1287)
+See [Supervisor restart backoff](https://github.com/erlang/otp/pull/1287).
 
 ## Installation
 
