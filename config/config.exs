@@ -5,4 +5,4 @@ use Mix.Config
 # Mix messages in colors...
 config :elixir, ansi_enabled: true
 
-import_config "persist_a*.exs"
+import_config "persist_*.exs"
