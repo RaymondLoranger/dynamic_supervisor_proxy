@@ -7,7 +7,30 @@ defmodule DynamicSupervisor.Proxy.MixProject do
       version: "0.1.0",
       elixir: "~> 1.7",
       start_permanent: Mix.env() == :prod,
+      name: "Dynamic Supervisor Proxy",
+      source_url: source_url(),
+      description: description(),
+      package: package(),
       deps: deps()
+    ]
+  end
+
+  defp source_url do
+    "https://github.com/RaymondLoranger/dynamic_supervisor_proxy"
+  end
+
+  defp description do
+    """
+    Starts a module-based supervisor process. Will wait a bit if the supervisor name is still registered on restarts.
+    """
+  end
+
+  defp package do
+    [
+      files: ["lib", "mix.exs", "README*", "config/persist*.exs"],
+      maintainers: ["Raymond Loranger"],
+      licenses: ["MIT"],
+      links: %{"GitHub" => source_url()}
     ]
   end
 
@@ -23,7 +46,7 @@ defmodule DynamicSupervisor.Proxy.MixProject do
     [
       {:mix_tasks,
        github: "RaymondLoranger/mix_tasks", only: :dev, runtime: false},
-      {:file_only_logger, github: "RaymondLoranger/file_only_logger"},
+      {:file_only_logger, "~> 0.1"},
       {:persist_config, "~> 0.1"},
       {:earmark, "~> 1.0", only: :dev},
       {:ex_doc, "~> 0.14", only: :dev, runtime: false},
