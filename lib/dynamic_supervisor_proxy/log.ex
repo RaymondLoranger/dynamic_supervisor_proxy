@@ -6,7 +6,8 @@ defmodule DynamicSupervisor.Proxy.Log do
     \nSupervisor #{inspect(name)} remains registered after:
     • Waiting: #{timeout} ms
     • Times: #{times}
-    • Reason: #{inspect(reason)}
+    • Reason:
+    #{inspect(reason)}
     """
   end
 
@@ -15,7 +16,8 @@ defmodule DynamicSupervisor.Proxy.Log do
     \nSupervisor #{inspect(name)} still registered:
     • Waiting: #{timeout} ms
     • Times left: #{times_left}
-    • Reason: #{inspect(reason)}
+    • Reason:
+    #{inspect(reason)}
     """
   end
 
@@ -24,7 +26,8 @@ defmodule DynamicSupervisor.Proxy.Log do
     \nSupervisor #{inspect(name)} now unregistered after:
     • Waiting: #{timeout} ms
     • Times: #{times}
-    • Reason: #{inspect(reason)}
+    • Reason:
+    #{inspect(reason)}
     """
   end
 end
