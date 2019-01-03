@@ -10,8 +10,6 @@ defmodule DynamicSupervisor.Proxy.Agent do
   def start_link(mod, arg, opts) do
     case DynamicSupervisor.start_link(mod, arg, opts) do
       {:ok, pid} ->
-        IO.inspect(:okkkkkkkkkkkkkkkkkkkk)
-        Log.info(:now_unregistered, {QQQ, 999, 0, {:ok, 'pid'}})
         {:ok, pid}
 
       {:error, {:already_started, _pid} = reason} ->
