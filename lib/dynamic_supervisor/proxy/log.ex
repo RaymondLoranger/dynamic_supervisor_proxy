@@ -1,33 +1,46 @@
 defmodule DynamicSupervisor.Proxy.Log do
   use File.Only.Logger
+  use PersistConfig
 
   warn :remains_registered, {name, timeout, times, reason} do
     """
-    \nSupervisor #{inspect(name)} remains registered after:
-    • Waiting: #{timeout} ms
+    \nSupervisor remains registered...
+    • Supervisor: #{inspect(name, pretty: true)}
+    • Waited: #{timeout} ms
     • Times: #{times}
     • Reason:
-    #{inspect(reason)}
+      #{inspect(reason, pretty: true)}
+    • App: #{Mix.Project.config()[:app]}
+    • Library: #{@app}
+    • Module: #{inspect(__MODULE__)}
     """
   end
 
   info :still_registered, {name, timeout, times_left, reason} do
     """
-    \nSupervisor #{inspect(name)} still registered:
+    \nSupervisor still registered...
+    • Supervisor: #{inspect(name, pretty: true)}
     • Waiting: #{timeout} ms
     • Times left: #{times_left}
     • Reason:
-    #{inspect(reason)}
+      #{inspect(reason, pretty: true)}
+    • App: #{Mix.Project.config()[:app]}
+    • Library: #{@app}
+    • Module: #{inspect(__MODULE__)}
     """
   end
 
   info :now_unregistered, {name, timeout, times, reason} do
     """
-    \nSupervisor #{inspect(name)} now unregistered after:
-    • Waiting: #{timeout} ms
+    \nSupervisor now unregistered...
+    • Supervisor: #{inspect(name, pretty: true)}
+    • Waited: #{timeout} ms
     • Times: #{times}
     • Reason:
-    #{inspect(reason)}
+      #{inspect(reason, pretty: true)}
+    • App: #{Mix.Project.config()[:app]}
+    • Library: #{@app}
+    • Module: #{inspect(__MODULE__)}
     """
   end
 end
