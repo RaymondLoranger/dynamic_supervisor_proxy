@@ -1,6 +1,5 @@
 defmodule DynamicSupervisor.Proxy.Log do
   use File.Only.Logger
-  use PersistConfig
 
   warn :remains_registered, {name, timeout, times, reason} do
     """
@@ -24,8 +23,8 @@ defmodule DynamicSupervisor.Proxy.Log do
     • Times left: #{times_left}
     • Reason:
       #{inspect(reason, pretty: true)}
-    • App: #{Mix.Project.config()[:app]}
-    • Library: #{@app}
+    • App: #{:application.get_application() |> elem(1)}
+    • Library: #{Application.get_application(__MODULE__)}
     • Module: #{inspect(__MODULE__)}
     """
   end
