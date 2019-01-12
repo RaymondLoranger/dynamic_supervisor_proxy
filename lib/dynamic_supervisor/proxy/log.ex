@@ -10,7 +10,7 @@ defmodule DynamicSupervisor.Proxy.Log do
     • Times: #{times}
     • Reason:
       #{inspect(reason, pretty: true)}
-    • App: #{:application.get_application()}
+    • App: #{:application.get_application() |> elem(1)}
     • Library: #{Application.get_application(__MODULE__)}
     • Module: #{inspect(__MODULE__)}
     """
@@ -38,7 +38,7 @@ defmodule DynamicSupervisor.Proxy.Log do
     • Times: #{times}
     • Reason:
       #{inspect(reason, pretty: true)}
-    • App: #{:application.get_application()}
+    • App: #{:application.get_application() |> elem(1)}
     • Library: #{Application.get_application(__MODULE__)}
     • Module: #{inspect(__MODULE__)}
     """
