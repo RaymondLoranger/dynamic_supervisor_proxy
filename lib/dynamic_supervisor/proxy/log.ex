@@ -10,7 +10,7 @@ defmodule DynamicSupervisor.Proxy.Log do
     • Times: #{times}
     • Reason:
       #{inspect(reason, pretty: true)}
-    • App: #{Mix.Project.config()[:app]} / #{:application.get_application()}
+    • App: #{Mix.Project.config()[:app]} / #{app()}
     • Library: #{@app} / #{Application.get_application(__MODULE__)}
     • Module: #{inspect(__MODULE__)}
     """
@@ -24,7 +24,7 @@ defmodule DynamicSupervisor.Proxy.Log do
     • Times left: #{times_left}
     • Reason:
       #{inspect(reason, pretty: true)}
-    • App: #{Mix.Project.config()[:app]} / #{:application.get_application()}
+    • App: #{Mix.Project.config()[:app]} / #{app()}
     • Library: #{@app} / #{Application.get_application(__MODULE__)}
     • Module: #{inspect(__MODULE__)}
     """
@@ -38,9 +38,19 @@ defmodule DynamicSupervisor.Proxy.Log do
     • Times: #{times}
     • Reason:
       #{inspect(reason, pretty: true)}
-    • App: #{Mix.Project.config()[:app]} / #{:application.get_application()}
+    • App: #{Mix.Project.config()[:app]} / #{app()}
     • Library: #{@app} / #{Application.get_application(__MODULE__)}
     • Module: #{inspect(__MODULE__)}
     """
+  end
+
+  ## Private functions
+
+  @spec app :: Application.app() | :undefined
+  defp app do
+    case :application.get_application() do
+      {:ok, app} -> app
+      :undefined -> :undefined
+    end
   end
 end
