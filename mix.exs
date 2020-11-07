@@ -4,15 +4,15 @@ defmodule DynamicSupervisor.Proxy.MixProject do
   def project do
     [
       app: :dynamic_supervisor_proxy,
-      version: "0.1.12",
-      elixir: "~> 1.7",
+      version: "0.1.13",
+      elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       name: "DynamicSupervisor Proxy",
       source_url: source_url(),
       description: description(),
       package: package(),
-      deps: deps(),
-      dialyzer: [plt_add_apps: [:mix]]
+      deps: deps()
+      # dialyzer: [plt_add_apps: [:mix]]
     ]
   end
 
@@ -45,13 +45,12 @@ defmodule DynamicSupervisor.Proxy.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:dialyxir, "~> 1.0", only: :dev, runtime: false},
+      {:ex_doc, "~> 0.22", only: :dev, runtime: false},
+      {:file_only_logger, "~> 0.1"},
       {:mix_tasks,
        github: "RaymondLoranger/mix_tasks", only: :dev, runtime: false},
-      {:file_only_logger, "~> 0.1"},
-      {:persist_config, "~> 0.1"},
-      {:earmark, "~> 1.0", only: :dev},
-      {:ex_doc, "~> 0.14", only: :dev, runtime: false},
-      {:dialyxir, "~> 0.5", only: :dev, runtime: false}
+      {:persist_config, "~> 0.4", runtime: false}
     ]
   end
 end

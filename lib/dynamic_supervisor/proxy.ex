@@ -19,6 +19,7 @@ defmodule DynamicSupervisor.Proxy do
   @doc """
   Starts a module-based supervisor process with the given `module` and `arg`.
   The `:name` option must be given in order to register a supervisor name.
+
   Will wait a bit if the supervisor name is still registered on restarts.
   See: [Supervisor restart backoff](https://github.com/erlang/otp/pull/1287)
 
@@ -30,7 +31,7 @@ defmodule DynamicSupervisor.Proxy do
   """
   defmacro start_link(mod, arg, opts) do
     quote bind_quoted: [mod: mod, arg: arg, opts: opts] do
-      DynamicSupervisor.Proxy.Agent.start_link(mod, arg, opts)
+      DynamicSupervisor.Proxy.Broker.start_link(mod, arg, opts)
     end
   end
 end

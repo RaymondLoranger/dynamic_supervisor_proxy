@@ -1,10 +1,10 @@
-defmodule DynamicSupervisor.Proxy.Agent do
+defmodule DynamicSupervisor.Proxy.Broker do
   use PersistConfig
 
   alias DynamicSupervisor.Proxy.Log
 
-  @timeout Application.get_env(@app, :timeout)
-  @times Application.get_env(@app, :times)
+  @timeout get_env(:timeout)
+  @times get_env(:times)
 
   @spec start_link(module, term, GenServer.options()) :: Supervisor.on_start()
   def start_link(mod, arg, opts) do
