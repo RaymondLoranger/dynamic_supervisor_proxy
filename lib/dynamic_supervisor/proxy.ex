@@ -19,7 +19,6 @@ defmodule DynamicSupervisor.Proxy do
   @doc """
   Starts a module-based supervisor process with the given `module` and `arg`.
   The `:name` option must be given in order to register a supervisor name.
-
   Will wait a bit if the supervisor name is still registered on restarts.
   See: [Supervisor restart backoff](https://github.com/erlang/otp/pull/1287)
 

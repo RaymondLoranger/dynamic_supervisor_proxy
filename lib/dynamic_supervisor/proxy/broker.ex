@@ -14,7 +14,7 @@ defmodule DynamicSupervisor.Proxy.Broker do
 
       {:error, {:already_started, _pid} = reason} ->
         :ok = wait(opts[:name], reason, @times)
-        DynamicSupervisor.start_link(mod, arg, opts)
+        {:ok, _pid} = DynamicSupervisor.start_link(mod, arg, opts)
     end
   end
 
@@ -23,17 +23,20 @@ defmodule DynamicSupervisor.Proxy.Broker do
   # On restarts, wait if name still registered...
   @spec wait(atom, term, non_neg_integer) :: :ok
   defp wait(name, reason, 0) do
-    Log.warn(:remains_registered, {name, @timeout, @times, reason})
+    remains_registered_vars = {name, @timeout, @times, reason, __ENV__}
+    :ok = Log.warn(:remains_registered, remains_registered_vars)
   end
 
   defp wait(name, reason, times_left) do
-    Log.info(:still_registered, {name, @timeout, times_left, reason})
+    still_registered_vars = {name, @timeout, times_left, reason, __ENV__}
+    :ok = Log.info(:still_registered, still_registered_vars)
     Process.sleep(@timeout)
 
     case Process.whereis(name) do
       nil ->
         times = @times - times_left + 1
-        Log.info(:now_unregistered, {name, @timeout, times, reason})
+        now_unregistered_vars = {name, @timeout, times, reason, __ENV__}
+        :ok = Log.info(:now_unregistered, now_unregistered_vars)
 
       pid when is_pid(pid) ->
         wait(name, reason, times_left - 1)
