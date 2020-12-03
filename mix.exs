@@ -22,7 +22,7 @@ defmodule DynamicSupervisor.Proxy.MixProject do
 
   defp description do
     """
-    Starts a module-based dynamic supervisor process.
+    Starts a module-based dynamic supervisor process with a registered name.
     Will wait a bit if the supervisor name is still registered on restarts.
     """
   end
