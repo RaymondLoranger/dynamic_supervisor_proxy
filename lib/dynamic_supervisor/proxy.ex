@@ -1,4 +1,9 @@
 defmodule DynamicSupervisor.Proxy do
+  @moduledoc """
+  Starts a module-based dynamic supervisor process.
+  Will wait a bit if the supervisor name is still registered on restarts.
+  """
+
   defmacro __using__(options) do
     alias = options[:alias]
 
@@ -17,24 +22,29 @@ defmodule DynamicSupervisor.Proxy do
   end
 
   @doc """
-  Starts a module-based supervisor process with the given `module` and `init_arg`. Will wait a bit if the supervisor name is still registered on restarts. See: [Supervisor restart backoff](https://github.com/erlang/otp/pull/1287).
+  Starts a module-based dynamic supervisor process with the given`module`
+  and `init_arg`. The `:name` option __must__ be given in order to register a
+  supervisor name. Will wait a bit if the supervisor name is still
+  registered on restarts. See: [Supervisor restart backoff](https://github.com/erlang/otp/pull/1287).
 
   To start the supervisor, the `init/1` callback will be invoked in the given
   `module`, with `init_arg` as its argument. The `init/1` callback must return
   a supervisor specification which can be created with the help of the `init/1`
   function.
 
-  The `:name` option must be given in order to register a supervisor name.
-
   ## Examples
 
       use DynamicSupervisor.Proxy
 
-      def start_link(:ok), do: start_link(DynSup, :ok, name: DynSup)
+      @spec start_link(term) :: Supervisor.on_start()
+      def start_link(:ok), do: start_link(__MODULE__, :ok, name: __MODULE__)
+
+      @spec init(term) :: {:ok, DynamicSupervisor.sup_flags()} | :ignore
+      def init(:ok), do: DynamicSupervisor.init(strategy: :one_for_one)
   """
   defmacro start_link(module, init_arg, opts) do
     quote bind_quoted: [mod: module, arg: init_arg, opts: opts] do
-      DynamicSupervisor.Proxy.Broker.start_link(mod, arg, opts)
+      DynamicSupervisor.Proxy.Starter.start_link(mod, arg, opts)
     end
   end
 end

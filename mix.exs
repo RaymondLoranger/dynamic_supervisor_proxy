@@ -4,7 +4,7 @@ defmodule DynamicSupervisor.Proxy.MixProject do
   def project do
     [
       app: :dynamic_supervisor_proxy,
-      version: "0.1.15",
+      version: "0.1.16",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       name: "DynamicSupervisor Proxy",
@@ -22,7 +22,8 @@ defmodule DynamicSupervisor.Proxy.MixProject do
 
   defp description do
     """
-    Starts a module-based supervisor process. Will wait a bit if the supervisor name is still registered on restarts.
+    Starts a module-based dynamic supervisor process.
+    Will wait a bit if the supervisor name is still registered on restarts.
     """
   end
 

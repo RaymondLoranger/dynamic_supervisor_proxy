@@ -1,4 +1,4 @@
-defmodule DynamicSupervisor.Proxy.Broker do
+defmodule DynamicSupervisor.Proxy.Starter do
   use PersistConfig
 
   alias DynamicSupervisor.Proxy.Log
@@ -14,7 +14,7 @@ defmodule DynamicSupervisor.Proxy.Broker do
 
       {:error, {:already_started, _pid} = reason} ->
         :ok = wait(opts[:name], reason, @times)
-        {:ok, _pid} = DynamicSupervisor.start_link(mod, arg, opts)
+        DynamicSupervisor.start_link(mod, arg, opts)
     end
   end
 
