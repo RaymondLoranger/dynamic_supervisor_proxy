@@ -1,6 +1,6 @@
 defmodule DynamicSupervisor.Proxy do
   @moduledoc """
-  Starts a module-based dynamic supervisor process.
+  Starts a module-based dynamic supervisor process with a registered name.
   Will wait a bit if the supervisor name is still registered on restarts.
   """
 
