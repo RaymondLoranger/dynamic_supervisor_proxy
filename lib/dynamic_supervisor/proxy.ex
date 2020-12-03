@@ -4,6 +4,16 @@ defmodule DynamicSupervisor.Proxy do
   Will wait a bit if the supervisor name is still registered on restarts.
   """
 
+  @doc """
+  Uses `DynamicSupervisor`. Also either aliases `DynamicSupervisor.Proxy`
+  (this module) and requires the alias or imports `DynamicSupervisor.Proxy`.
+
+  ## Examples
+
+      use DynamicSupervisor.Proxy, alias: Proxy
+
+      use DynamicSupervisor.Proxy
+  """
   defmacro __using__(options) do
     alias = options[:alias]
 
