@@ -27,9 +27,10 @@ defmodule DynamicSupervisor.Proxy do
   supervisor name. Will wait a bit if the supervisor name is still
   registered on restarts. See: [Supervisor restart backoff](https://github.com/erlang/otp/pull/1287).
 
-  To start the supervisor, the `init/1` callback will be invoked in the given
-  `module`, with `init_arg` as its argument. The `init/1` callback must return
-  a supervisor specification which can be created with the help of the `init/1`
+  To start the supervisor, the `DynamicSupervisor.init/1` callback will be
+  invoked in the given `module`, with `init_arg` as its argument. The
+  `DynamicSupervisor.init/1` callback must return a supervisor specification
+  which can be created with the help of the `DynamicSupervisor.init/1`
   function.
 
   ## Examples
