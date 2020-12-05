@@ -23,7 +23,7 @@ defmodule DynamicSupervisor.Proxy.Log do
     • Supervisor: #{inspect(name)}
     • Waited: #{timeout} ms
     • Times: #{times}
-    • Unresolved issue:
+    • Issue remaining 'unresolved':
       #{inspect(reason)}
     #{from()}
     """
@@ -37,7 +37,7 @@ defmodule DynamicSupervisor.Proxy.Log do
     • Supervisor: #{inspect(name)}
     • Waited: #{timeout} ms
     • Times: #{times}
-    • Resolved issue:
+    • Issue now 'resolved':
       #{inspect(reason)}
     #{from()}
     """
