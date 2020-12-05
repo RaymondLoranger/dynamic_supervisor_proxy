@@ -15,7 +15,7 @@ defmodule DynamicSupervisor.Proxy.Starter do
       {:error, {:already_started, _pid} = reason} ->
         name = opts[:name]
         still_registered = {name, @timeout, @times, reason, __ENV__}
-        :ok = Log.error(:still_registered, still_registered)
+        :ok = Log.error(:already_registered, still_registered)
         :ok = wait(name, reason, @times)
         DynamicSupervisor.start_link(mod, arg, opts)
     end
@@ -37,8 +37,8 @@ defmodule DynamicSupervisor.Proxy.Starter do
     case Process.whereis(name) do
       nil ->
         times = @times - times_left
-        now_deregistered = {name, @timeout, times, reason, __ENV__}
-        :ok = Log.info(:now_deregistered, now_deregistered)
+        now_unregistered = {name, @timeout, times, reason, __ENV__}
+        :ok = Log.info(:now_unregistered, now_unregistered)
 
       pid when is_pid(pid) ->
         still_registered = {name, @timeout, times_left, reason, __ENV__}
