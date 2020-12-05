@@ -1,20 +1,6 @@
 defmodule DynamicSupervisor.Proxy.Log do
   use File.Only.Logger
 
-  warn :remains_registered, {name, timeout, times, reason, env} do
-    """
-    \nSupervisor remains registered...
-    • Inside function:
-      #{fun(env)}
-    • Supervisor: #{inspect(name)}
-    • Waited: #{timeout} ms
-    • Times: #{times}
-    • Reason:
-      #{inspect(reason)}
-    #{from()}
-    """
-  end
-
   info :still_registered, {name, timeout, times_left, reason, env} do
     """
     \nSupervisor still registered...
@@ -23,7 +9,21 @@ defmodule DynamicSupervisor.Proxy.Log do
     • Supervisor: #{inspect(name)}
     • Waiting: #{timeout} ms
     • Times left: #{times_left}
-    • Reason:
+    • Issue:
+      #{inspect(reason)}
+    #{from()}
+    """
+  end
+
+  warn :remains_registered, {name, timeout, times, reason, env} do
+    """
+    \nSupervisor remains registered...
+    • Inside function:
+      #{fun(env)}
+    • Supervisor: #{inspect(name)}
+    • Waited: #{timeout} ms
+    • Times: #{times}
+    • Unresolved issue:
       #{inspect(reason)}
     #{from()}
     """
@@ -37,7 +37,7 @@ defmodule DynamicSupervisor.Proxy.Log do
     • Supervisor: #{inspect(name)}
     • Waited: #{timeout} ms
     • Times: #{times}
-    • Reason:
+    • Resolved issue:
       #{inspect(reason)}
     #{from()}
     """
