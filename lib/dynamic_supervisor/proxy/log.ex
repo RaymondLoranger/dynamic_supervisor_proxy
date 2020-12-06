@@ -8,7 +8,7 @@ defmodule DynamicSupervisor.Proxy.Log do
       #{fun(env)}
     • Supervisor: #{inspect(name)}
     • Waiting: #{timeout} ms
-    • Up to: #{times} times
+    • Times left: #{times}
     • Reason:
       #{inspect(reason)}
     #{from()}
