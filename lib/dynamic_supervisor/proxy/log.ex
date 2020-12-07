@@ -3,7 +3,7 @@ defmodule DynamicSupervisor.Proxy.Log do
 
   error :already_registered, {name, timeout, times, reason, env} do
     """
-    \nSupervisor already registered...
+    \n'DynamicSupervisor.start_link/3' failed: supervisor already registered...
     • Inside function:
       #{fun(env)}
     • Supervisor: #{inspect(name)}
