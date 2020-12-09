@@ -2,6 +2,7 @@ defmodule DynamicSupervisor.Proxy do
   @moduledoc """
   Starts a module-based dynamic supervisor process with a registered name.
   Will wait a bit if the supervisor name is still registered on restarts.
+  See [Supervisor restart backoff](https://github.com/erlang/otp/pull/1287).
   """
 
   @doc """
