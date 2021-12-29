@@ -1,59 +1,46 @@
 defmodule DynamicSupervisor.Proxy.Log do
   use File.Only.Logger
 
-  error :already_registered, {name, timeout, times, reason, env} do
+  warn :already_registered, {name, timeout, times, reason, env} do
     """
     \n'DynamicSupervisor.start_link/3' failed: supervisor already registered...
-    • Inside function:
-      #{fun(env)}
     • Supervisor: #{inspect(name)}
     • Waiting: #{timeout} ms
     • Times left: #{times}
-    • Reason:
-      #{inspect(reason)}
-    #{from()}
+    • Reason: #{inspect(reason)}
+    #{from(env, __MODULE__)}
     """
   end
 
   warn :remains_registered, {name, timeout, times, reason, env} do
     """
     \nSupervisor remains registered...
-    • Inside function:
-      #{fun(env)}
     • Supervisor: #{inspect(name)}
     • Waited: #{timeout} ms
     • Times: #{times}
-    • Issue remaining 'unresolved':
-      #{inspect(reason)}
-    #{from()}
+    • Reason: #{inspect(reason)}
+    #{from(env, __MODULE__)}
     """
   end
 
-  info :still_registered, {name, timeout, times_left, reason, env} do
+  warn :still_registered, {name, timeout, times_left, reason, env} do
     """
     \nSupervisor still registered...
-    • Inside function:
-      #{fun(env)}
     • Supervisor: #{inspect(name)}
     • Waited: #{timeout} ms
     • Times left: #{times_left}
-    • Issue still 'unresolved':
-      #{inspect(reason)}
-    #{from()}
+    • Reason: #{inspect(reason)}
+    #{from(env, __MODULE__)}
     """
   end
 
-  info :now_unregistered, {name, timeout, times, reason, env} do
+  warn :now_unregistered, {name, timeout, times, env} do
     """
     \nSupervisor now unregistered...
-    • Inside function:
-      #{fun(env)}
     • Supervisor: #{inspect(name)}
     • Waited: #{timeout} ms
     • Times: #{times}
-    • Issue now 'resolved':
-      #{inspect(reason)}
-    #{from()}
+    #{from(env, __MODULE__)}
     """
   end
 end

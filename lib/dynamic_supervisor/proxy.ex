@@ -1,13 +1,15 @@
 defmodule DynamicSupervisor.Proxy do
+  @supervisor_restart_backoff "https://github.com/erlang/otp/pull/1287"
+
   @moduledoc """
   Starts a module-based dynamic supervisor process with a registered name.
-  Will wait a bit if the supervisor name is still registered on restarts.
-  See [Supervisor restart backoff](https://github.com/erlang/otp/pull/1287).
+  Will wait a bit if the supervisor name is still registered on restarts. See
+  [Supervisor restart backoff](#{@supervisor_restart_backoff}).
   """
 
   @doc """
-  Uses `DynamicSupervisor`. Also either aliases `DynamicSupervisor.Proxy`
-  (this module) and requires the alias or imports `DynamicSupervisor.Proxy`.
+  Uses `DynamicSupervisor`. Also either aliases `DynamicSupervisor.Proxy` (this
+  module) and requires the alias or imports `DynamicSupervisor.Proxy`.
 
   ## Examples
 
@@ -33,10 +35,10 @@ defmodule DynamicSupervisor.Proxy do
   end
 
   @doc """
-  Starts a module-based dynamic supervisor process with the given`module`
-  and `init_arg`. The `:name` option __must__ be given in order to register a
-  supervisor name. Will wait a bit if the supervisor name is still
-  registered on restarts. See: [Supervisor restart backoff](https://github.com/erlang/otp/pull/1287).
+  Starts a module-based dynamic supervisor process with the given `module` and
+  `init_arg`. The `:name` option __must__ be given in order to register a
+  supervisor name. Will wait a bit if the supervisor name is still registered
+  on restarts. See [Supervisor restart backoff](#{@supervisor_restart_backoff}).
 
   To start the supervisor, the `c:DynamicSupervisor.init/1` callback will be
   invoked in the given `module`, with `init_arg` as its argument. The
