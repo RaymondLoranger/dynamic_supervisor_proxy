@@ -4,7 +4,7 @@ defmodule DynamicSupervisor.Proxy.MixProject do
   def project do
     [
       app: :dynamic_supervisor_proxy,
-      version: "0.1.31",
+      version: "0.1.32",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       name: "DynamicSupervisor Proxy",
