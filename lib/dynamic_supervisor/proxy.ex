@@ -49,8 +49,8 @@ defmodule DynamicSupervisor.Proxy do
 
       use DynamicSupervisor.Proxy
 
-      @spec start_link(term) :: Supervisor.on_start()
-      def start_link(:ok), do: start_link(__MODULE__, :ok, name: __MODULE__)
+      @spec start_link :: Supervisor.on_start()
+      def start_link, do: start_link(__MODULE__, :ok, name: __MODULE__)
 
       @spec init(term) :: {:ok, DynamicSupervisor.sup_flags()} | :ignore
       def init(:ok), do: DynamicSupervisor.init(strategy: :one_for_one)
