@@ -22,7 +22,7 @@ defmodule DynamicSupervisor.Proxy.Log do
     """
   end
 
-  warning :now_unregistered, {name, timeout, times, env} do
+  info :now_unregistered, {name, timeout, times, env} do
     """
     \nSupervisor now unregistered...
     • Supervisor: #{inspect(name)}
@@ -32,7 +32,7 @@ defmodule DynamicSupervisor.Proxy.Log do
     """
   end
 
-  warning :remains_registered, {name, timeout, times, env} do
+  error :remains_registered, {name, timeout, times, env} do
     """
     \nSupervisor remains registered...
     • Supervisor: #{inspect(name)}
