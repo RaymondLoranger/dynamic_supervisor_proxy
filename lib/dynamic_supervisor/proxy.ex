@@ -3,13 +3,15 @@ defmodule DynamicSupervisor.Proxy do
 
   @moduledoc """
   Starts a module-based dynamic supervisor process with a registered name.
-  Will wait a bit if the supervisor name is still registered on restarts. See
-  [Supervisor restart backoff](#{@supervisor_restart_backoff}).
+  Will wait a bit if the supervisor name is still registered on restarts.
+  See [Supervisor restart backoff](#{@supervisor_restart_backoff}).
   """
 
   @doc """
   Uses `DynamicSupervisor`. Also either aliases `DynamicSupervisor.Proxy` (this
-  module) and requires the alias or imports `DynamicSupervisor.Proxy`.
+  module) and requires the alias or imports `DynamicSupervisor.Proxy`. Finally
+  it will inject the default implementation of the `c:DynamicSupervisor.init/1`
+  callback.
 
   ## Examples
 
@@ -23,13 +25,24 @@ defmodule DynamicSupervisor.Proxy do
     if alias do
       quote do
         use DynamicSupervisor
+
         alias unquote(__MODULE__), as: unquote(alias)
+
         require unquote(alias)
+
+        @spec init(term) :: {:ok, DynamicSupervisor.sup_flags()} | :ignore
+        def init(:ok = _arg), do: DynamicSupervisor.init(strategy: :one_for_one)
+        defoverridable init: 1
       end
     else
       quote do
         use DynamicSupervisor
+
         import unquote(__MODULE__)
+
+        @spec init(term) :: {:ok, DynamicSupervisor.sup_flags()} | :ignore
+        def init(:ok = _arg), do: DynamicSupervisor.init(strategy: :one_for_one)
+        defoverridable init: 1
       end
     end
   end

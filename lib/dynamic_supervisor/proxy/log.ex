@@ -1,8 +1,6 @@
 defmodule DynamicSupervisor.Proxy.Log do
   use File.Only.Logger
 
-  require Logger
-
   warning :still_registered, {name, timeout, times, reason, env} do
     """
     \n'DynamicSupervisor.start_link/3' failed: supervisor still registered...
