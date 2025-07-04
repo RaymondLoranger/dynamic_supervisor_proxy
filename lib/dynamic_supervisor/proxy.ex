@@ -28,7 +28,7 @@ defmodule DynamicSupervisor.Proxy do
         alias unquote(__MODULE__), as: unquote(alias)
         require unquote(alias)
         @spec init(term) :: {:ok, DynamicSupervisor.sup_flags()} | :ignore
-        def init(:ok = _arg), do: DynamicSupervisor.init(strategy: :one_for_one)
+        def init(_arg = :ok), do: DynamicSupervisor.init(strategy: :one_for_one)
         defoverridable init: 1
       end
     else
@@ -36,7 +36,7 @@ defmodule DynamicSupervisor.Proxy do
         use DynamicSupervisor
         import unquote(__MODULE__)
         @spec init(term) :: {:ok, DynamicSupervisor.sup_flags()} | :ignore
-        def init(:ok = _arg), do: DynamicSupervisor.init(strategy: :one_for_one)
+        def init(_arg = :ok), do: DynamicSupervisor.init(strategy: :one_for_one)
         defoverridable init: 1
       end
     end
