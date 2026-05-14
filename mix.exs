@@ -48,7 +48,8 @@ defmodule DynamicSupervisor.Proxy.MixProject do
     [
       {:dialyxir, "~> 1.0", only: :dev, runtime: false},
       {:ex_doc, "~> 0.22", only: :dev, runtime: false},
-      {:file_only_logger, "~> 0.2"},
+      # {:file_only_logger, "~> 0.2"},
+      {:file_only_logger, path: "../file_only_logger"},
       {:persist_config, "~> 0.4", runtime: false}
     ]
   end

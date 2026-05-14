@@ -4,12 +4,14 @@ defmodule DynamicSupervisor.ProxyTest.DynSup do
   alias __MODULE__
 
   @spec start_link :: Supervisor.on_start()
-  def start_link, do: start_link(DynSup, :ok, name: DynSup)
+  def start_link, do: start_link(DynSup, name: DynSup)
 
   ## Callbacks
 
+  # Injected by the above `use` macro...
+  # @impl DynamicSupervisor
   # @spec init(term) :: {:ok, DynamicSupervisor.sup_flags()} | :ignore
-  # def init(_arg = :ok), do: DynamicSupervisor.init(strategy: :one_for_one)
+  # def init(_arg), do: DynamicSupervisor.init(strategy: :one_for_one)
 end
 
 defmodule DynamicSupervisor.ProxyTest do
@@ -22,7 +24,7 @@ defmodule DynamicSupervisor.ProxyTest do
 
   doctest Proxy
 
-  describe "Proxy.start_link/3" do
+  describe "Proxy.start_link/2,3" do
     test "returns {:ok, pid} or {:error, reason}" do
       Logger.notice("Starting dynamic supervisor!")
       assert {:ok, pid} = DynSup.start_link()

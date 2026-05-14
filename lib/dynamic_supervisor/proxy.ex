@@ -9,7 +9,7 @@ defmodule DynamicSupervisor.Proxy do
 
   @doc """
   Uses `DynamicSupervisor`. Also either aliases `DynamicSupervisor.Proxy` (this
-  module) and requires the alias or imports `DynamicSupervisor.Proxy`. Finally
+  module) and requires the alias or imports `DynamicSupervisor.Proxy`. Finally,
   it will inject the default implementation of the `c:DynamicSupervisor.init/1`
   callback.
 
@@ -27,16 +27,18 @@ defmodule DynamicSupervisor.Proxy do
         use DynamicSupervisor
         alias unquote(__MODULE__), as: unquote(alias)
         require unquote(alias)
+        @impl DynamicSupervisor
         @spec init(term) :: {:ok, DynamicSupervisor.sup_flags()} | :ignore
-        def init(_arg = :ok), do: DynamicSupervisor.init(strategy: :one_for_one)
+        def init(_arg), do: DynamicSupervisor.init(strategy: :one_for_one)
         defoverridable init: 1
       end
     else
       quote do
         use DynamicSupervisor
         import unquote(__MODULE__)
+        @impl DynamicSupervisor
         @spec init(term) :: {:ok, DynamicSupervisor.sup_flags()} | :ignore
-        def init(_arg = :ok), do: DynamicSupervisor.init(strategy: :one_for_one)
+        def init(_arg), do: DynamicSupervisor.init(strategy: :one_for_one)
         defoverridable init: 1
       end
     end
@@ -44,7 +46,7 @@ defmodule DynamicSupervisor.Proxy do
 
   @doc """
   Starts a module-based dynamic supervisor process with the given `module` and
-  `init_arg`. The `:name` option __must__ be given in order to register a
+  `init_arg`. The `:name` option _must_ be specified in order to register a
   supervisor name. Will wait a bit if the supervisor name is still registered
   on restarts. See [Supervisor restart backoff](#{@supervisor_restart_backoff}).
 
@@ -55,15 +57,39 @@ defmodule DynamicSupervisor.Proxy do
 
   ## Examples
 
-      use DynamicSupervisor.Proxy
+      iex> defmodule DynSupOne do
+      iex>   use DynamicSupervisor.Proxy
+      iex>
+      iex>   def start_link(:ok), do: start_link(DynSupOne, name: DynSupOne)
+      iex> end
+      iex>
+      iex> {:ok, pid} = DynSupOne.start_link(:ok)
+      iex> is_pid(pid) and pid == Process.whereis(DynSupOne)
+      true
 
-      @spec start_link :: Supervisor.on_start()
-      def start_link, do: start_link(__MODULE__, :ok, name: __MODULE__)
+      iex> defmodule DynSupTwo do
+      iex>   use DynamicSupervisor.Proxy
+      iex>
+      iex>   def start_link, do: start_link(DynSupTwo, ??, name: DynSupTwo)
+      iex> end
+      iex>
+      iex> {:ok, pid} = DynSupTwo.start_link()
+      iex> is_pid(pid) and pid == Process.whereis(DynSupTwo)
+      true
 
-      @spec init(term) :: {:ok, DynamicSupervisor.sup_flags()} | :ignore
-      def init(:ok), do: DynamicSupervisor.init(strategy: :one_for_one)
+      iex> defmodule DynSupThree do
+      iex>   use DynamicSupervisor.Proxy, alias: Proxy
+      iex>
+      iex>   def start_link(OK) do
+      iex>     Proxy.start_link(__MODULE__, name: :three)
+      iex>   end
+      iex> end
+      iex>
+      iex> {:ok, pid} = DynSupThree.start_link(OK)
+      iex> is_pid(pid) and pid == Process.whereis(:three)
+      true
   """
-  defmacro start_link(module, init_arg, opts) do
+  defmacro start_link(module, init_arg \\ nil, opts) do
     quote bind_quoted: [mod: module, arg: init_arg, opts: opts] do
       DynamicSupervisor.Proxy.Starter.start_link(mod, arg, opts)
     end
