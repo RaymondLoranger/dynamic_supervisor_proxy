@@ -3,12 +3,19 @@ defmodule DynamicSupervisor.Proxy.Starter do
 
   alias DynamicSupervisor.Proxy.Log
 
+  @supervisor_restart_backoff "https://github.com/erlang/otp/pull/1287"
   @timeout get_env(:timeout)
   @times get_env(:times)
 
+  @doc """
+  Starts a module-based dynamic supervisor process with the given `module` and
+  `init_arg`. The `:name` option _must_ be specified in order to register a
+  supervisor name. Will wait a bit if the supervisor name is still registered
+  on restarts. See [Supervisor restart backoff](#{@supervisor_restart_backoff}).
+  """
   @spec start_link(module, term, GenServer.options()) :: Supervisor.on_start()
-  def start_link(mod, arg, opts) do
-    case DynamicSupervisor.start_link(mod, arg, opts) do
+  def start_link(module, init_arg, opts) do
+    case DynamicSupervisor.start_link(module, init_arg, opts) do
       {:ok, pid} ->
         {:ok, pid}
 
@@ -17,7 +24,7 @@ defmodule DynamicSupervisor.Proxy.Starter do
         still_registered = {name, @timeout, @times, reason, __ENV__}
         :ok = Log.warning(:still_registered, still_registered)
         :ok = wait(name, pid, @times)
-        DynamicSupervisor.start_link(mod, arg, opts)
+        DynamicSupervisor.start_link(module, init_arg, opts)
 
       other ->
         other
