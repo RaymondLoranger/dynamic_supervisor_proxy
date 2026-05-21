@@ -63,20 +63,22 @@ defmodule DynamicSupervisor.Proxy do
       iex>   def start_link(:ok), do: start_link(DynSupOne, name: DynSupOne)
       iex> end
       iex>
-      iex> {:ok, pid} = DynSupOne.start_link(:ok)
-      iex> is_pid(pid) and pid == Process.whereis(DynSupOne)
+      iex> children = [{DynSupOne, :ok}]
+      iex> options = [name: Sup, strategy: :one_for_one]
+      iex> {:ok, _pid} = Supervisor.start_link(children, options)
+      iex>
+      iex> %{active: 1, supervisors: 1} = Supervisor.count_children(Sup)
+      iex> [{name, pid, :supervisor, [name]}] = Supervisor.which_children(Sup)
+      iex>
+      iex> name == DynSupOne and pid == Process.whereis(DynSupOne)
       true
 
       iex> defmodule DynSupTwo do
       iex>   use DynamicSupervisor.Proxy
       iex>
-      iex>   def start_link, do: start_link(DynSupTwo, ??, name: DynSupTwo)
+      iex>   def start_link(_), do: start_link(DynSupTwo, ??, name: DynSupTwo)
       iex> end
       iex>
-      iex> {:ok, pid} = DynSupTwo.start_link()
-      iex> is_pid(pid) and pid == Process.whereis(DynSupTwo)
-      true
-
       iex> defmodule DynSupThree do
       iex>   use DynamicSupervisor.Proxy, alias: Proxy
       iex>
@@ -85,8 +87,17 @@ defmodule DynamicSupervisor.Proxy do
       iex>   end
       iex> end
       iex>
-      iex> {:ok, pid} = DynSupThree.start_link(OK)
-      iex> is_pid(pid) and pid == Process.whereis(:three)
+      iex> children = [DynSupTwo, {DynSupThree, OK}]
+      iex> options = [name: Sup, strategy: :one_for_one]
+      iex> {:ok, _pid} = Supervisor.start_link(children, options)
+      iex>
+      iex> %{active: 2, supervisors: 2} = Supervisor.count_children(Sup)
+      iex> children = Supervisor.which_children(Sup)
+      iex> pid_two = Process.whereis(DynSupTwo)
+      iex> pid_three = Process.whereis(:three)
+      iex>
+      iex> {DynSupTwo, pid_two, :supervisor, [DynSupTwo]} in children and
+      ...> {DynSupThree, pid_three, :supervisor, [DynSupThree]} in children
       true
   """
   defmacro start_link(module, init_arg \\ nil, opts) do

@@ -12,30 +12,33 @@ defmodule DynamicSupervisor.Proxy.Log do
     """
   end
 
-  warning :still_registered, {name, timeout, times_left, env} do
+  warning :still_registered, {{name, pid}, timeout, times_left, env} do
     """
     \nSupervisor still registered...
     • Supervisor: #{inspect(name)}
+    • Pid: #{inspect(pid)}
     • Waited: #{timeout} ms
     • Times left: #{times_left}
     #{from(env, __MODULE__)}\
     """
   end
 
-  info :now_unregistered, {name, timeout, times, env} do
+  info :now_unregistered, {name, pid, timeout, times, env} do
     """
     \nSupervisor now unregistered...
     • Supervisor: #{inspect(name)}
+    • Pid: #{inspect(pid)}
     • Waited: #{timeout} ms
     • Times: #{times}
     #{from(env, __MODULE__)}\
     """
   end
 
-  error :remains_registered, {name, timeout, times, env} do
+  error :remains_registered, {name, pid, timeout, times, env} do
     """
     \nSupervisor remains registered...
     • Supervisor: #{inspect(name)}
+    • Pid: #{inspect(pid)}
     • Waited: #{timeout} ms
     • Times: #{times}
     #{from(env, __MODULE__)}\

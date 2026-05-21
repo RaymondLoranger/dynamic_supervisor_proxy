@@ -3,8 +3,8 @@ defmodule DynamicSupervisor.ProxyTest.DynSup do
 
   alias __MODULE__
 
-  @spec start_link :: Supervisor.on_start()
-  def start_link, do: start_link(DynSup, name: DynSup)
+  @spec start_link(:ok) :: Supervisor.on_start()
+  def start_link(:ok), do: start_link(DynSup, name: DynSup)
 
   ## Callbacks
 
@@ -26,10 +26,29 @@ defmodule DynamicSupervisor.ProxyTest do
 
   describe "Proxy.start_link/2,3" do
     test "returns {:ok, pid} or {:error, reason}" do
-      Logger.notice("Starting dynamic supervisor!")
-      assert {:ok, pid} = DynSup.start_link()
-      Logger.warning("Dynamic supervisor already started!!")
-      assert {:error, {:already_started, ^pid}} = DynSup.start_link()
+      Logger.warning("Starting dynamic supervisor...")
+      {:ok, pid} = DynSup.start_link(:ok)
+
+      Logger.error("Dynamic supervisor already started...")
+      {:error, {:already_started, ^pid}} = DynSup.start_link(:ok)
+
+      spawn(fn ->
+        :timer.sleep(50)
+        DynamicSupervisor.stop(DynSup)
+      end)
+
+      Logger.notice("Dynamic supervisor restarted...")
+      {:ok, restart_pid} = DynSup.start_link(:ok)
+
+      refute pid == restart_pid
+
+      :timer.sleep(200)
+
+      assert File.read!("./log/info.log") =~ """
+             Supervisor now unregistered...
+             • Supervisor: DynamicSupervisor.ProxyTest.DynSup
+             • Pid: #{inspect(pid)}
+             """
     end
   end
 end
