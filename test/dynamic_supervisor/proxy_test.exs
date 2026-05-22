@@ -47,7 +47,7 @@ defmodule DynamicSupervisor.ProxyTest do
       assert File.read!("./log/info.log") =~ """
              Supervisor now unregistered...
              • Supervisor: DynamicSupervisor.ProxyTest.DynSup
-             • PID: #{inspect(pid)}
+             • Supervisor PID: #{inspect(pid)}
              """
     end
   end
