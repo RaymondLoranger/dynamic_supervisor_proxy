@@ -16,7 +16,7 @@ defmodule DynamicSupervisor.Proxy.Log do
     """
     \nSupervisor still registered...
     • Supervisor: #{inspect(name)}
-    • PID: #{inspect(pid)}
+    • Supervisor PID: #{inspect(pid)}
     • Waited: #{timeout} ms
     • Times left: #{times_left}
     #{from(env, __MODULE__)}\
@@ -27,7 +27,7 @@ defmodule DynamicSupervisor.Proxy.Log do
     """
     \nSupervisor now unregistered...
     • Supervisor: #{inspect(name)}
-    • PID: #{inspect(pid)}
+    • Supervisor PID: #{inspect(pid)}
     • Waited: #{timeout} ms
     • Times: #{times}
     #{from(env, __MODULE__)}\
@@ -38,7 +38,7 @@ defmodule DynamicSupervisor.Proxy.Log do
     """
     \nSupervisor remains registered...
     • Supervisor: #{inspect(name)}
-    • PID: #{inspect(pid)}
+    • Supervisor PID: #{inspect(pid)}
     • Waited: #{timeout} ms
     • Times: #{times}
     #{from(env, __MODULE__)}\
