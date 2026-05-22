@@ -3,7 +3,7 @@ defmodule DynamicSupervisor.Proxy.Starter do
 
   alias DynamicSupervisor.Proxy.Log
 
-  @supervisor_restart_backoff "https://github.com/erlang/otp/pull/1287"
+  @supervisor_restart_backoff get_env(:supervisor_restart_backoff)
   @timeout get_env(:timeout)
   @times get_env(:times)
 

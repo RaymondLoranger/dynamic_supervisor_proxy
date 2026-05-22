@@ -1,5 +1,7 @@
 defmodule DynamicSupervisor.Proxy do
-  @supervisor_restart_backoff "https://github.com/erlang/otp/pull/1287"
+  use PersistConfig
+
+  @supervisor_restart_backoff get_env(:supervisor_restart_backoff)
 
   @moduledoc """
   Starts a module-based dynamic supervisor process with a registered name.
