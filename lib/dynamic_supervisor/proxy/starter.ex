@@ -48,7 +48,7 @@ defmodule DynamicSupervisor.Proxy.Starter do
       nil ->
         times = @times - times_left
         now_unregistered = {name, pid, @timeout, times, __ENV__}
-        :ok = Log.info(:now_unregistered, now_unregistered)
+        :ok = Log.notice(:now_unregistered, now_unregistered)
 
       pid when is_pid(pid) ->
         still_registered = {{name, pid}, @timeout, times_left, __ENV__}
