@@ -34,7 +34,7 @@ defmodule DynamicSupervisor.Proxy.Starter do
   ## Private functions
 
   # On restarts, wait if `name` still registered...
-  @spec wait(atom, pid, non_neg_integer) :: :ok
+  @spec wait(GenServer.name(), pid, non_neg_integer) :: :ok
   defp wait(_name, _pid, 0) do
     :ok
   end
@@ -55,6 +55,7 @@ defmodule DynamicSupervisor.Proxy.Starter do
     end
   end
 
+  @spec log(GenServer.name(), pid, non_neg_integer) :: :ok
   defp log(name, pid, 0) do
     remains_registered = {name, pid, @timeout, @times, __ENV__}
     :ok = Log.error(:remains_registered, remains_registered)
