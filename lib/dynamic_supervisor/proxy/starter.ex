@@ -35,9 +35,8 @@ defmodule DynamicSupervisor.Proxy.Starter do
 
   # On restarts, wait if `name` still registered...
   @spec wait(atom, pid, non_neg_integer) :: :ok
-  defp wait(name, pid, 0) do
-    remains_registered = {name, pid, @timeout, @times, __ENV__}
-    :ok = Log.error(:remains_registered, remains_registered)
+  defp wait(_name, _pid, 0) do
+    :ok
   end
 
   defp wait(name, pid, times_left) do
@@ -50,10 +49,19 @@ defmodule DynamicSupervisor.Proxy.Starter do
         now_unregistered = {name, pid, @timeout, times, __ENV__}
         :ok = Log.notice(:now_unregistered, now_unregistered)
 
-      pid when is_pid(pid) ->
-        still_registered = {{name, pid}, @timeout, times_left, __ENV__}
-        :ok = Log.warning(:still_registered, still_registered)
+      ^pid ->
+        log(name, pid, times_left)
         wait(name, pid, times_left)
     end
+  end
+
+  defp log(name, pid, 0) do
+    remains_registered = {name, pid, @timeout, @times, __ENV__}
+    :ok = Log.error(:remains_registered, remains_registered)
+  end
+
+  defp log(name, pid, times_left) do
+    still_registered = {{name, pid}, @timeout, times_left, __ENV__}
+    :ok = Log.warning(:still_registered, still_registered)
   end
 end
