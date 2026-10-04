@@ -24,7 +24,7 @@ defmodule DynamicSupervisor.ProxyTest do
 
   doctest Proxy
 
-  describe "Proxy.start_link/2,3" do
+  describe "Proxy.start_link/3" do
     test "returns {:ok, pid} or {:error, reason}" do
       Logger.warning("Starting dynamic supervisor...")
       {:ok, pid} = DynSup.start_link(:ok)
