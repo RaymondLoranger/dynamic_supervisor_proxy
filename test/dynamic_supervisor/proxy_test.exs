@@ -33,11 +33,12 @@ defmodule DynamicSupervisor.ProxyTest do
       {:error, {:already_started, ^pid}} = DynSup.start_link(:ok)
 
       spawn(fn ->
-        :timer.sleep(50)
+        :timer.sleep(10)
+        Logger.debug("Dynamic supervisor stopping...")
         DynamicSupervisor.stop(DynSup)
       end)
 
-      Logger.notice("Dynamic supervisor restarted...")
+      Logger.notice("Dynamic supervisor restarting...")
       {:ok, restart_pid} = DynSup.start_link(:ok)
 
       refute pid == restart_pid
