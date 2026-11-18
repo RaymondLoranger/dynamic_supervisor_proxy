@@ -1,7 +1,7 @@
 defmodule DynamicSupervisor.Proxy.Log do
   use File.Only.Logger
 
-  warning :still_registered, {name, timeout, times, reason, env} do
+  warning :still_registered, {{name, timeout, times, reason}, env} do
     """
     \n'DynamicSupervisor.start_link/3' failed: supervisor still registered...
     • Supervisor: #{inspect(name)}
@@ -12,7 +12,7 @@ defmodule DynamicSupervisor.Proxy.Log do
     """
   end
 
-  warning :still_registered, {{name, pid}, timeout, times_left, env} do
+  warning :still_registered, {{{name, pid}, timeout, times_left}, env} do
     """
     \nSupervisor still registered...
     • Supervisor: #{inspect(name)}
@@ -23,7 +23,7 @@ defmodule DynamicSupervisor.Proxy.Log do
     """
   end
 
-  notice :now_unregistered, {name, pid, timeout, times, env} do
+  notice :now_unregistered, {{name, pid, timeout, times}, env} do
     """
     \nSupervisor now unregistered...
     • Supervisor: #{inspect(name)}
@@ -34,7 +34,7 @@ defmodule DynamicSupervisor.Proxy.Log do
     """
   end
 
-  error :remains_registered, {name, pid, timeout, times, env} do
+  error :remains_registered, {{name, pid, timeout, times}, env} do
     """
     \nSupervisor remains registered...
     • Supervisor: #{inspect(name)}

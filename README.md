@@ -12,7 +12,7 @@ by adding `dynamic_supervisor_proxy` to your list of dependencies in `mix.exs`:
 ```elixir
 def deps do
   [
-    {:dynamic_supervisor_proxy, "~> 0.1.0"}
+    {:dynamic_supervisor_proxy, "~> 0.1"}
   ]
 end
 ```
